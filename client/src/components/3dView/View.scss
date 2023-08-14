@@ -1,0 +1,11 @@
+@import '../../css-config/mixins.scss';
+
+.main-container{
+    model-viewer{
+        height: 0;
+        width: 0;
+        position: absolute;
+        z-index: 1;
+        // background-color: yellow;
+    }
+}
