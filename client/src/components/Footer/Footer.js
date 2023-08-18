@@ -9,7 +9,7 @@ function Footer() {
         <div className="col">
           <div className="title">About</div>
           <div className="text">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt qui asperiores illo assumenda quaerat numquam molestiae beatae. Minus, rerum dolor.
+          Experience style and safety with WearIt! Try on our trendy collection of glasses and face masks virtually, finding the perfect fit for your unique look. Embrace fashion and protection effortlessly.
           </div>
         </div>
         <div className="col">

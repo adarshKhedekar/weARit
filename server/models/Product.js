@@ -10,6 +10,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  popular: Boolean,
   category: {
     type: String, 
     required: true,
@@ -21,7 +22,7 @@ const productSchema = new mongoose.Schema({
     min: 0,
   },
   image: {
-    type: String,
+    type: Buffer,
     required: true,
   },
 });

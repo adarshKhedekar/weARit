@@ -2,19 +2,26 @@ import "./SingleProduct.scss";
 import { BsCartPlus } from "react-icons/bs";
 import {FaFacebook, FaTwitter, FaInstagram, FaLinkedin} from 'react-icons/fa'
 import RelatedProduct from './RelatedProduct/RelatedProduct';
+import { useLocation } from "react-router-dom";
+import { Buffer } from 'buffer'
 function SingleProduct() {
-  console.log()
+
+  const location = useLocation();
+  const { productName, productDescription, category, price, image } = location.state;
+  const imageBuffer = Buffer.from(image);
+  const imageBase64 = imageBuffer.toString('base64');
+
   return (
     <div className="single-product-main-content">
       <div className="layout">
         <div className="single-product-page">
           <div className="left">
-            <img src={`${process.env.PUBLIC_URL}/Slider/image5.jpg`} alt="" />
+            <img src={`data:image/png;base64,${imageBase64}`} alt="" />
           </div>
           <div className="right">
-            <span className="name">Product name</span>
-            <span className="price">Price</span>
-            <span className="desc">Product desc</span>
+            <span className="name">{productName}</span>
+            <span className="price">&#8377;{price}</span>
+            <span className="desc">{productDescription}</span>
 
             <div className="cart-buttons">
               <div className="quantity-buttons">
@@ -33,7 +40,7 @@ function SingleProduct() {
             <div className="info-item">
               <span className="text-bold">
                 Category: 
-                <span>Eye Wear</span>
+                <span>{category}</span>
               </span>
               <span className="text-bold">
                 Share:
@@ -47,7 +54,7 @@ function SingleProduct() {
             </div>
           </div>
         </div>
-        <RelatedProduct/>
+        <RelatedProduct category={category} productName={productName}/>
       </div>
     </div>
   );

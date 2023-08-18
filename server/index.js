@@ -1,11 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require('cors');
-const port = 5000;
 const Product = require("./models/Product");
 const Category = require("./models/Category");
 const User = require("./models/User");
+const fs = require("fs");
+const port = 5000;
 const app = express();
+
 
 app.use(cors())
 app.use(express.json());
@@ -17,6 +19,7 @@ mongoose
     console.log("connected to Mongoose");
   })
   .catch((err) => console.log(err));
+
 
 //Users routes
 
@@ -89,7 +92,8 @@ app.get("/product", async (req, res) => {
 app.post("/product", async (req, res) => {
   try {
     //add image afterwards
-    const { productName, productDescription, category, price, image } =
+    const image = fs.readFileSync('./Products/face4.png');
+    const { productName, productDescription, popular, category, price } =
       req.body;
 
     const existingProduct = await Product.findOne({ productName: productName });
@@ -102,6 +106,7 @@ app.post("/product", async (req, res) => {
       _id: new mongoose.Types.ObjectId(),
       productName,
       productDescription,
+      popular,
       category,
       price,
       image,

@@ -57,8 +57,11 @@ function Login() {
                     const {userId, username} = data;
                     setUserId(userId);
                     setUser(username);
+                    toast.success('User Logged In Successfully!!')
                     localStorage.setItem('user', JSON.stringify({username: username, id: userId}));
-                    navigate(-1);
+                    setTimeout(() => {
+                      navigate(-1);
+                    }, 1000);
                 }else{
                     toast.error(data.message)
                 }
@@ -90,8 +93,11 @@ function Login() {
                 const {newUserid, newUsername} = data;
                 setUserId(newUserid)
                 setUser(newUsername);
+                toast.success('User Registered Successfully!!')
                 localStorage.setItem('user', JSON.stringify({username: newUsername, id: newUserid}));
-                navigate(-1);
+                setTimeout(() => {
+                  navigate(-1);
+                }, 1000);
             }else{
                 toast.error(data.message)
             }
