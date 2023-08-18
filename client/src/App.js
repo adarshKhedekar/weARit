@@ -2,27 +2,58 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import Catergory from "./components/Category/Category";
+import Category from "./components/Category/Category";
 import SingleProduct from "./components/SingleProduct/SingleProduct";
 import View from './components/3dView/View'
 import NoMatch from "./components/NoMatch";
-import AppContext from "./utils/context";
+import Login from "./components/Login/Login";
+import { Context } from "./utils/context";
+import { useContext, useEffect } from "react";
+
 
 function App() {
+  const { setUser, setUserId } = useContext(Context);
+  useEffect(()=>{
+    const loggedInUser = localStorage.getItem('user');
+    if (loggedInUser) {
+      let foundUser = JSON.parse(loggedInUser);
+      const { username, id } = foundUser;
+
+      setUser(username);
+      setUserId(id);
+      console.log(foundUser);
+    }
+  }, [setUser,setUserId])
   return (
     <>
       <BrowserRouter>
-        <AppContext>
-          <Header />
+        
           <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/category/:id" element={<Catergory />}></Route>
-            <Route path="/product/:id" element={<SingleProduct />}></Route>
-            <Route path="/view/:id" element={<View/>}></Route>
-            <Route path="*" element={<NoMatch />}></Route>
+            <Route
+              path="/"
+              element={<><Header /><Home /><Footer /></>}
+            />
+            <Route
+              path="/login"
+              element={<Login />}
+            />
+            <Route
+              path="/category/:id"
+              element={<><Header /><Category /><Footer /></>}
+            />
+            <Route
+              path="/product/:id"
+              element={<><Header /><SingleProduct /><Footer /></>}
+            />
+            <Route
+              path="/view/:id"
+              element={<><Header /><View /><Footer /></>}
+            />
+            <Route
+              path="*"
+              element={<><Header /><NoMatch /><Footer /></>}
+            />
           </Routes>
-          <Footer />
-        </AppContext>
       </BrowserRouter>
     </>
   );

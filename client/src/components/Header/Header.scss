@@ -64,6 +64,62 @@
             @include md{
                 gap: 25px;
             }
+            .user-dropdown{
+                position: relative;
+                .dropdown-toggle{
+                    background-color: white;
+                    color: #212121;
+                    padding: 5px;
+                    font-size: 10px;
+                    cursor: pointer;
+                    @include md{
+                        padding: 10px;
+                        font-size: 15px;
+                    }
+                }
+                .dropdown{
+                    position: relative;
+                    .top{
+                        background-color: white;
+                        width: 15px;
+                        height: 15px;
+                        transform: rotate(45deg);
+                        position: absolute;
+                        right: 31%;
+                        z-index: 99;
+                    }
+                    .dropdown-menu{
+                        margin-top: 5px;
+                        position: absolute;
+                        right: 0;
+                        top: 0;
+                        width: 100%;
+                        background-color: white;
+                        z-index: 99;
+                        @include md{
+                            top: 11%;
+                            right: 0;
+                            top: 0;
+                        }
+                        li{
+                            list-style: none;
+                            padding: 5px;
+                            font-size: 10px;
+                            transition: all 0.2s ease-in-out;
+                            text-align: center;
+                            cursor: pointer;
+                            @include md{
+                                padding: 10px;
+                                font-size: 15px;
+                            }
+                        }
+                        li:hover{
+                            color: #212121;
+                        }
+                    }
+                }
+                
+            }
             svg{
                 font-size: 20px;
                 cursor: pointer;
