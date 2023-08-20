@@ -4,7 +4,7 @@ import { MdClose } from "react-icons/md";
 import { BsCartX } from "react-icons/bs";
 import CartItem from "./CartItem/CartItem";
 import { Context } from "../../utils/context";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Cart({ setShowCart }) {
@@ -14,28 +14,13 @@ function Cart({ setShowCart }) {
     setShowCart(false);
   };
 
-  const [subtotal, setSubtotal] = useState(0);
 
-  const { userId, setCartItems, cartItems } = useContext(Context);
+  const { getCartItems, cartItems, subtotal } = useContext(Context);
 
   useEffect(() => {
-    const getCartItems = async () => {
-      const response = await fetch(`http://localhost:5000/${userId}/getcart`);
-      const data = await response.json();
-      setCartItems(data);
-      let userData = localStorage.getItem("user");
-      if (userData) {
-        userData = JSON.parse(userData);
-        userData.cart = data.cart;
-        localStorage.setItem("user", JSON.stringify(userData));
-      }
-      let sum = data.reduce((curr, prod) => {
-        return curr + prod.quantity * prod.price;
-      }, 0);
-      setSubtotal(sum);
-    };
     getCartItems();
   }, []);
+  
   return (
     <div className="cart-panel">
       <div className="opac-layer"></div>

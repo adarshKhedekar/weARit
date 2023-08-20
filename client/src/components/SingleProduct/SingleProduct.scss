@@ -63,15 +63,18 @@
                 }
                 .cart-buttons{
                     display: flex;
+                    gap: 5px;
                     @include md{
                         margin-top: 30px;
                     }
                     .quantity-buttons{
-                       width: fit-content; 
+                       width: 110px; 
                        display: flex;
                        border: 2px solid rgba(0,0,0,0.2);
-                       margin-right: 10px;
                        height: 50px;
+                       @include md{
+                        width: 150px;
+                       }
                        span{
                             font-size: 18px;
                             width: 40px;
@@ -100,12 +103,13 @@
                         align-items: center;
                         justify-content: center;
                         cursor: pointer;
-                        font-size: 16px;
+                        font-size: 13px;
                         color: white;
                         background-color: #8e3de2;
                         border-bottom: 3px solid #6516aa;
                         flex-grow: 1;
                         @include md{
+                            font-size: 16px;
                             flex-grow: unset;
                         }
                     }

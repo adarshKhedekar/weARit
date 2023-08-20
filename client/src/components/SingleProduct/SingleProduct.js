@@ -8,15 +8,16 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Context } from "../../utils/context";
 import { useContext } from "react";
+
+
 function SingleProduct() {
   const { productName } = useParams();
   console.log('product is', productName)
   const navigate = useNavigate();
-  const { userId, setCartItems, popularProducts, cartItems } = useContext(Context);
+  const { userId, setCartItems, popularProducts, cartItems, setShowCart, addToCart } = useContext(Context);
   const [quantity, setQuantity] = useState(1);
   const [isPresent, setIsPresent] = useState(false);
   const [currProduct, setCurrProduct] = useState(null);
-  const [img, setImg] = useState(null);
 
 
     
@@ -29,61 +30,38 @@ function SingleProduct() {
         }
       );
 
-      cartItems?.map((item) => {
-        if (item.productName === productName) {
-          setIsPresent(true);
-        }
-        return -1;
-      });
+      const foundProduct = cartItems?.findIndex(item => item.productName === productName);
+
+      if(foundProduct === -1){
+        console.log('not')
+        setIsPresent(false);
+      }else{
+        console.log('yes')
+        setIsPresent(true)
+      }
 
 
       if(singleProduct){
         const { productDescription, category, price, image } = singleProduct;
         const imageBuffer = Buffer.from(image);
-        setImg(imageBuffer);
-        setCurrProduct({productDescription: productDescription, category: category, price: price})
+        setCurrProduct({productName: productName, productDescription: productDescription, category: category, price: price, img: imageBuffer})
       }
 
-    }, [productName, cartItems, isPresent, popularProducts]);
+    }, [productName, setCartItems, cartItems, isPresent, popularProducts]);
     console.log('in comp')
     
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (e) => {
     if (!userId) {
       navigate("/login");
       return;
     }
+    if(e.target.innerText === 'GO TO CART'){
+      setShowCart(true);
+      return;
+    }
     try {
-      const formData = new FormData();
-
-      formData.append("productName", productName);
-      formData.append("quantity", quantity);
-      formData.append("price", currProduct.price);
-
-      // Create a Blob from the image buffer
-      const imageBlob = new Blob([img], { type: "image/png" });
-      // console.log((imageBlob.size)/1024)
-      // console.log(image)
-
-      formData.append("image", imageBlob); // Append the image file
-
-      const response = await fetch(
-        `http://localhost:5000/${userId}/addToCart`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
-      setCartItems(data.cart);
-      console.log(data.cart);
-      let userData = localStorage.getItem("user");
-      if (userData) {
-        userData = JSON.parse(userData);
-        userData.cart = data.cart;
-        localStorage.setItem("user", JSON.stringify(userData));
-      }
+      addToCart(currProduct, quantity);
       setQuantity(1);
       toast.success("Item added to Cart successfully");
     } catch (err) {
@@ -101,13 +79,17 @@ function SingleProduct() {
       : toast.error("Quantity should be greater than 1");
   };
 
+  const handleView = () => {
+    navigate('/view/i')
+  }
+
   return (
     currProduct ? (<div className="single-product-main-content">
       <ToastContainer />
       <div className="layout">
         <div className="single-product-page">
           <div className="left">
-            <img src={`data:image/png;base64,${img.toString("base64")}`} alt="" />
+            <img src={`data:image/png;base64,${currProduct.img.toString("base64")}`} alt="" />
           </div>
           <div className="right">
             <span className="name">{productName}</span>
@@ -125,6 +107,10 @@ function SingleProduct() {
               <button className="add-to-cart-button" onClick={handleAddToCart}>
                 <BsCartPlus size={20} />
                 {isPresent ? "GO TO CART" : "ADD TO CART"}
+              </button>
+              <button className="add-to-cart-button" onClick={handleView}>
+                <BsCartPlus size={20} />
+                AR VIEW
               </button>
             </div>
 
@@ -149,7 +135,7 @@ function SingleProduct() {
         </div>
         <RelatedProduct category={currProduct.category} productName={productName} />
       </div>
-    </div>) : <div>Loading....</div>
+    </div>) : <h1>Loading...</h1>
   );
 }
 

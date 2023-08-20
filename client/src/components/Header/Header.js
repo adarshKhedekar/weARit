@@ -14,10 +14,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 function Header() {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
-  const [showCart, setShowCart] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const { userId, setUserId, setUser, user, cartItems } = useContext(Context);
+  const { userId, setUserId, setUser, user, cartItems, showCart, setShowCart } = useContext(Context);
   const location = useLocation();
   const isMainPage = location.pathname === '/'
 

@@ -183,7 +183,7 @@ app.post("/:id/addToCart", upload.single("image"), async (req, res) => {
       (item) => item.productName === productName
     );
     if (foundCartItem) {
-      foundCartItem.quantity += parseInt(quantity);
+      foundCartItem.quantity = parseInt(quantity);
     } else {
       userCart.push(cartItems);
     }
