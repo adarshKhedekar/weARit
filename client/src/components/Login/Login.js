@@ -17,7 +17,7 @@ function Login() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [showValidation, setShowValidation] = useState(false);
-  const { setUserId, setUser } = useContext(Context);
+  const { setUserId, setUser, setCartItems } = useContext(Context);
   const navigate = useNavigate();
 
   const usernamePattern = /^[a-zA-Z0-9_]{6,10}$/;
@@ -54,11 +54,12 @@ function Login() {
                 const data = await response.json();
                 console.log(data)
                 if(data.userId){
-                    const {userId, username} = data;
+                    const {userId, username, cart} = data;
                     setUserId(userId);
                     setUser(username);
+                    setCartItems(cart)
                     toast.success('User Logged In Successfully!!')
-                    localStorage.setItem('user', JSON.stringify({username: username, id: userId}));
+                    localStorage.setItem('user', JSON.stringify({username: username, id: userId, cart: cart}));
                     setTimeout(() => {
                       navigate(-1);
                     }, 1000);
@@ -94,7 +95,7 @@ function Login() {
                 setUserId(newUserid)
                 setUser(newUsername);
                 toast.success('User Registered Successfully!!')
-                localStorage.setItem('user', JSON.stringify({username: newUsername, id: newUserid}));
+                localStorage.setItem('user', JSON.stringify({username: newUsername, id: newUserid, cart: []}));
                 setTimeout(() => {
                   navigate(-1);
                 }, 1000);

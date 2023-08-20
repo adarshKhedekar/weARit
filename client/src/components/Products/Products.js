@@ -1,20 +1,10 @@
 import './Products.scss';
 import PropTypes from 'prop-types';
 import Product from './Product/Product';
-import {useEffect, useContext} from 'react'
+import {useContext} from 'react'
 import { Context } from '../../utils/context';
 function Products({title, products}) {
-  const {popularProducts, setPopularProducts} = useContext(Context);
-  useEffect(()=>{
-    const getProducts = async() => {
-      const response = await fetch('http://localhost:5000/product');
-      const data = await response.json();
-      console.log('popularporduct',data)
-      setPopularProducts(data);
-    }
-    getProducts();
-  },[setPopularProducts])
-
+  const {popularProducts} = useContext(Context);
   const productsToRender = !products ? popularProducts : products;
 
   return (

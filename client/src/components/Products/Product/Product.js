@@ -10,7 +10,7 @@ function Product({productName, productDescription, category, price, image}) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/product/${productName}`, {state: {productName: productName, productDescription: productDescription, category: category, price: price, image: image}})
+    navigate(`/product/${productName}`)
   }
 
   return (

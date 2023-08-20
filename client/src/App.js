@@ -12,18 +12,27 @@ import { useContext, useEffect } from "react";
 import ScrollToTop from './ScrollToTop'
 
 function App() {
-  const { setUser, setUserId } = useContext(Context);
+  const { setUser, setUserId, setCartItems, setPopularProducts } = useContext(Context);
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
     if (loggedInUser){
       let foundUser = JSON.parse(loggedInUser);
-      const { username, id } = foundUser;
+      const { username, id, cart } = foundUser;
 
       setUser(username);
       setUserId(id);
+      setCartItems(cart)
+  
+      const getProducts = async() => {
+        const response = await fetch('http://localhost:5000/product');
+        const data = await response.json();
+        console.log('popularporduct',data)
+        setPopularProducts(data);
+      }
+      getProducts();
       console.log('found', foundUser);
     }
-  }, [setUser, setUserId]);
+  }, [setUser, setUserId, setCartItems, setPopularProducts]);
   return (
     <>
       <BrowserRouter>
@@ -51,7 +60,7 @@ function App() {
             }
           />
           <Route
-            path="/product/:id"
+            path="/product/:productName"
             element={
               <>
                 <Header />

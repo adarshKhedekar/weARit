@@ -17,7 +17,7 @@ function Header() {
   const [showCart, setShowCart] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const { userId, setUserId, setUser, user } = useContext(Context);
+  const { userId, setUserId, setUser, user, cartItems } = useContext(Context);
   const location = useLocation();
   const isMainPage = location.pathname === '/'
 
@@ -100,7 +100,7 @@ function Header() {
             <AiOutlineSearch onClick={handleSearch} />
             <span className="cart-icon" onClick={handleShowCart}>
               <AiOutlineShoppingCart />
-              <span>5</span>
+              {cartItems?.length > 0 ? <span>{cartItems.length}</span> : ''}
             </span>
           </div>
         </div>
