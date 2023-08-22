@@ -80,7 +80,7 @@ function SingleProduct() {
   };
 
   const handleView = () => {
-    navigate('/view/i')
+    navigate(`/view/${productName}`)
   }
 
   return (
@@ -109,7 +109,6 @@ function SingleProduct() {
                 {isPresent ? "GO TO CART" : "ADD TO CART"}
               </button>
               <button className="add-to-cart-button" onClick={handleView}>
-                <BsCartPlus size={20} />
                 AR VIEW
               </button>
             </div>

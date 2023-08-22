@@ -7,36 +7,37 @@ import SingleProduct from "./components/SingleProduct/SingleProduct";
 import View from "./components/3dView/View";
 import NoMatch from "./components/NoMatch";
 import Login from "./components/Login/Login";
+import Orders from "./components/Orders/Orders";
 import { Context } from "./utils/context";
 import { useContext, useEffect } from "react";
-import ScrollToTop from './ScrollToTop'
+import ScrollToTop from "./ScrollToTop";
 
 function App() {
-  const { setUser, setUserId, setCartItems, setPopularProducts } = useContext(Context);
+  const { setUser, setUserId, setCartItems, setPopularProducts } =
+    useContext(Context);
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
-    if (loggedInUser){
+    if (loggedInUser) {
       let foundUser = JSON.parse(loggedInUser);
       const { username, id, cart } = foundUser;
 
       setUser(username);
       setUserId(id);
-      setCartItems(cart)
-  
-      const getProducts = async() => {
-        const response = await fetch('http://localhost:5000/product');
-        const data = await response.json();
-        console.log('popularporduct',data)
-        setPopularProducts(data);
-      }
-      getProducts();
-      console.log('found', foundUser);
+      setCartItems(cart);
+      console.log("found", foundUser);
     }
+    const getProducts = async () => {
+      const response = await fetch("http://localhost:5000/product");
+      const data = await response.json();
+      console.log("popularporduct", data);
+      setPopularProducts(data);
+    };
+    getProducts();
   }, [setUser, setUserId, setCartItems, setPopularProducts]);
   return (
     <>
       <BrowserRouter>
-      <ScrollToTop/>
+        <ScrollToTop />
         <Routes>
           <Route
             path="/"
@@ -70,11 +71,21 @@ function App() {
             }
           />
           <Route
-            path="/view/:id"
+            path="/view/:productName"
             element={
               <>
                 <Header />
                 <View />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <>
+                <Header />
+                <Orders />
                 <Footer />
               </>
             }

@@ -25,15 +25,11 @@ const userSchema = new mongoose.Schema({
     }
   ],
   orders: [{
-    products: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
-    }],
-    orderDate: {
-      type: Date,
-      default: Date.now,
-    },
-  }],
+      productName: String,
+      productImage: Buffer,
+      price: Number,
+      quantity: Number,
+  }]
 });
 
 const User = mongoose.model('User', userSchema);

@@ -25,13 +25,16 @@ function CartItem({ product }) {
       );
       const data = await response.json();
       setCartItems(data.cart);
+      toast.success(data.message, {
+        autoClose: 2000, // Automatically close after 1 second
+        closeOnClick: false, // Prevent manual closing
+      });
       let userData = localStorage.getItem("user");
       if (userData) {
         userData = JSON.parse(userData);
         userData.cart = data.cart;
         localStorage.setItem("user", JSON.stringify(userData));
       }
-      toast.success(data.message);
     } catch (err) {
       console.log("err", err);
     }

@@ -53,7 +53,14 @@ function Header() {
     navigate('/login')
   }
 
-  const handleOrders = () => {};
+  const handleOrders = () => {
+    if(!userId){
+      navigate('/login');
+      return;
+    }
+    setShowDropdown(false)
+    navigate('/orders');
+  };
 
   const handleSearch = () => {
     setShowSearch(true);

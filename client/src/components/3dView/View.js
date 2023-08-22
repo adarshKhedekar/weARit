@@ -1,11 +1,21 @@
 import * as faceapi from "face-api.js";
-import React from "react";
+import React, { useContext, useState } from "react";
+import { BsCartPlus } from "react-icons/bs";
 import Model from "./Model";
 import './View.scss'
+import { useParams, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { Context } from "../../utils/context";
+import { Buffer } from "buffer";
 
 function View() {
+  const { productName } = useParams();
+  const navigate = useNavigate();
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
   const [captureVideo, setCaptureVideo] = React.useState(false);
+  const [isPresent, setIsPresent] = useState(false);
+  const {popularProducts, addToCart, userId, cartItems, setShowCart} = useContext(Context);
+  const [currProduct, setCurrProduct] = useState(null);
 
   const videoRef = React.useRef();
   const videoHeight = 480;
@@ -23,8 +33,29 @@ function View() {
         faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
       ]).then(setModelsLoaded(true));
     };
+    const foundProduct = cartItems?.findIndex(item => item.productName === productName);
+
+    if(foundProduct === -1){
+      console.log('not')
+      setIsPresent(false);
+    }else{
+      console.log('yes')
+      setIsPresent(true)
+    }
+    const singleProduct = popularProducts?.find(
+      (item) => {
+        return item.productName === productName
+      }
+    );
+
+    if(singleProduct){
+      const { productDescription, category, price, image } = singleProduct;
+      const imageBuffer = Buffer.from(image);
+      setCurrProduct({productName: productName, productDescription: productDescription, category: category, price: price, img: imageBuffer})
+    }
+
     loadModels();
-  }, []);
+  }, [productName, cartItems, isPresent, popularProducts]);
 
   const startVideo = () => {
     setCaptureVideo(true);
@@ -38,6 +69,23 @@ function View() {
       .catch((err) => {
         console.error("error:", err);
       });
+  };
+
+  const handleAddToCart = async (e) => {
+    if (!userId) {
+      navigate("/login");
+      return;
+    }
+    if(e.target.innerText === 'GO TO CART'){
+      setShowCart(true);
+      return;
+    }
+    try {
+      addToCart(currProduct, 1);
+      toast.success("Item added to Cart successfully");
+    } catch (err) {
+      console.log("err", err);
+    }
   };
 
   const handleVideoOnPlay = () => {
@@ -132,7 +180,8 @@ function View() {
 
   return (
     <div className="main-container">
-      {captureVideo && modelsLoaded && <Model/>}
+      <ToastContainer/>
+      {captureVideo && modelsLoaded && <Model category={currProduct.category} productName={productName}/>}
       {captureVideo ? (
         modelsLoaded ? (
           <div>
@@ -159,7 +208,7 @@ function View() {
       ) : (
         <></>
       )}
-      <div style={{ textAlign: "center", padding: "10px" }}>
+      <div style={{display: 'flex', gap:'15px', justifyContent: 'center', margin: '20px'}}>
         {captureVideo && modelsLoaded ? (
           <button
             onClick={closeWebcam}
@@ -168,12 +217,11 @@ function View() {
               backgroundColor: "#8e2de2",
               color: "white",
               padding: "15px",
-              fontSize: "25px",
+              fontSize: "20px",
               border: "none",
-              borderRadius: "10px",
             }}
           >
-            Close Webcam
+            CLOSE WEBCAM
           </button>
         ) : (
           <button
@@ -183,14 +231,28 @@ function View() {
               backgroundColor: "#8e2de2",
               color: "white",
               padding: "15px",
-              fontSize: "25px",
+              fontSize: "20px",
               border: "none",
-              borderRadius: "10px",
             }}
           >
-            Open Webcam
+            OPEN WEBCAM
           </button>
         )}
+        <button
+            style={{
+              cursor: "pointer",
+              backgroundColor: "#8e2de2",
+              color: "white",
+              padding: "15px",
+              gap:'5px',
+              fontSize: "20px",
+              border: "none",
+            }}
+            onClick={handleAddToCart}
+          >
+            <BsCartPlus size={20} />
+            {isPresent ? "GO TO CART" : "ADD TO CART"}
+          </button>
       </div>
     </div>
   );
