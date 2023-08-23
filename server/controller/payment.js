@@ -2,15 +2,9 @@ const PaymentInstance = require("../index");
 const crypto = require("crypto");
 const User = require("../models/User");
 
-exports.checkout = async (req, res) => {
-  const user = await User.findById(req.body.userId);
-  if(!user){
-    return res.status(404).json({message: 'User not Found'})
-  }
-  const userOrders = user.orders;
-  user.orders = userOrders.concat(req.body.cart);
-  await user.save();
 
+
+exports.checkout = async (req, res) => {
   const options = {
     amount: Number(req.body.amount * 100),
     currency: "INR",
@@ -20,7 +14,8 @@ exports.checkout = async (req, res) => {
 };
 
 exports.paymentVerification = async (req, res) => {
-  const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
+    req.body;
 
   const body = razorpay_order_id + "|" + razorpay_payment_id;
 
@@ -30,6 +25,25 @@ exports.paymentVerification = async (req, res) => {
     .digest("hex");
 
   if (generated_signature == razorpay_signature) {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not Found" });
+    }
+    const userOrders = user.orders;
+    user.cart.map((item) => {
+      const { productName, productImage, price, quantity } = item;
+      userOrders.push({
+        productName,
+        productImage,
+        price,
+        quantity,
+        paymentDate: new Date(),
+        orderId: razorpay_order_id,
+      });
+    });
+    user.cart = [];
+    await user.save();
+
     return res.redirect(`http://localhost:3000/orders`);
   }
   res.status(404).json({ success: false, message: "Transaction Failed!!" });

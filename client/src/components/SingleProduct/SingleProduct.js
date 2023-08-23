@@ -23,7 +23,6 @@ function SingleProduct() {
     
     useEffect(() => {
       setQuantity(1);
-      console.log('pop', popularProducts)
       const singleProduct = popularProducts?.find(
         (item) => {
           return item.productName === productName
@@ -33,10 +32,8 @@ function SingleProduct() {
       const foundProduct = cartItems?.findIndex(item => item.productName === productName);
 
       if(foundProduct === -1){
-        console.log('not')
         setIsPresent(false);
       }else{
-        console.log('yes')
         setIsPresent(true)
       }
 
@@ -48,7 +45,6 @@ function SingleProduct() {
       }
 
     }, [productName, setCartItems, cartItems, isPresent, popularProducts]);
-    console.log('in comp')
     
 
   const handleAddToCart = async (e) => {

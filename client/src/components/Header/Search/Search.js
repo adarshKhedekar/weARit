@@ -4,11 +4,11 @@ import { useContext, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { Context } from "../../../utils/context";
 import ShowResults from "./ShowResults";
-
 function Search({ setShowSearch }) {
 
   const {popularProducts} = useContext(Context);
   const [toDisplay, setToDisplay] = useState([]);
+  const [show, setShow] = useState(false);
   
 
   const handleUpdate = (e) => {
@@ -18,12 +18,17 @@ function Search({ setShowSearch }) {
       setToDisplay([])
       return;
     }
+    
     const regex = new RegExp(input, 'gi');
   
     const matches = popularProducts?.filter((x) => {
       return x.productName.match(regex) || x.productDescription.match(regex);
     });
-  
+    if(len > 0 && matches.length === 0){
+      setShow(true);
+    }else{
+      setShow(false)
+    }
     setToDisplay([...matches])
   };
 
@@ -36,6 +41,7 @@ function Search({ setShowSearch }) {
       <div className="search-result-content">
         <div className="search-results">
           {/* Serach Content */}
+          {show && <h1>NO RESULT FOUND</h1>}
           <ShowResults results={toDisplay} setShowSearch={setShowSearch}/>
         </div>
       </div>

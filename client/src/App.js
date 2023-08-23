@@ -13,14 +13,13 @@ import { useContext, useEffect } from "react";
 import ScrollToTop from "./ScrollToTop";
 
 function App() {
-  const { setUser, setUserId, setCartItems, setPopularProducts } =
+  const { setUser, setUserId, setCartItems, setPopularProducts, setOrders } =
     useContext(Context);
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
     if (loggedInUser) {
       let foundUser = JSON.parse(loggedInUser);
       const { username, id, cart } = foundUser;
-
       setUser(username);
       setUserId(id);
       setCartItems(cart);
@@ -33,7 +32,7 @@ function App() {
       setPopularProducts(data);
     };
     getProducts();
-  }, [setUser, setUserId, setCartItems, setPopularProducts]);
+  }, [setUser, setUserId, setCartItems, setPopularProducts, setOrders]);
   return (
     <>
       <BrowserRouter>

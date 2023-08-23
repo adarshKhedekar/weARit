@@ -9,6 +9,7 @@ const AppContext = ({ children }) => {
   const [cartItems, setCartItems] = useState();
   const [showCart, setShowCart] = useState(false);
   const [subtotal, setSubtotal] = useState(0);
+  const [orders, setOrders] = useState([]);
 
   const addToCart = async (product, quantity) => {
     const formData = new FormData();
@@ -32,6 +33,7 @@ const AppContext = ({ children }) => {
     let userData = localStorage.getItem("user");
     if (userData) {
       userData = JSON.parse(userData);
+      console.log(data.cart, userData.cart)
       userData.cart = data.cart;
       localStorage.setItem("user", JSON.stringify(userData));
     }
@@ -44,14 +46,8 @@ const AppContext = ({ children }) => {
   const getCartItems = async () => {
     const response = await fetch(`http://localhost:5000/${userId}/getcart`);
     const data = await response.json();
-    console.log(data);
+    console.log('user-cart', data);
     setCartItems(data);
-    let userData = localStorage.getItem("user");
-    if (userData) {
-      userData = JSON.parse(userData);
-      userData.cart = data.cart;
-      localStorage.setItem("user", JSON.stringify(userData));
-    }
     let sum = data.reduce((curr, prod) => {
       return curr + prod.quantity * prod.price;
     }, 0);
@@ -75,6 +71,8 @@ const AppContext = ({ children }) => {
         getCartItems,
         subtotal,
         setSubtotal,
+        orders, 
+        setOrders
       }}
     >
       {children}

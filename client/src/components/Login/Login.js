@@ -1,5 +1,5 @@
 import { useState, useRef, useContext } from "react";
-import "./Login.css";
+import "./Login.scss";
 import {
   AiOutlineUser,
   AiOutlineLock,
@@ -60,9 +60,7 @@ function Login() {
                     setCartItems(cart)
                     toast.success('User Logged In Successfully!!')
                     localStorage.setItem('user', JSON.stringify({username: username, id: userId, cart: cart}));
-                    setTimeout(() => {
-                      navigate(-1);
-                    }, 1000);
+                    navigate(-1)
                 }else{
                     toast.error(data.message)
                 }
@@ -96,9 +94,7 @@ function Login() {
                 setUser(newUsername);
                 toast.success('User Registered Successfully!!')
                 localStorage.setItem('user', JSON.stringify({username: newUsername, id: newUserid, cart: []}));
-                setTimeout(() => {
-                  navigate(-1);
-                }, 1000);
+               navigate(-1);
             }else{
                 toast.error(data.message)
             }

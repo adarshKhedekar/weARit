@@ -1,57 +1,63 @@
-.container{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to bottom right, #8e2d8e, black);
-    /* background-color: #8e2d8e; */
-  }
-  .authForm{
-    position: relative;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    margin: 3% auto;
-    padding: 4%;
-    border-radius: 5%;
-  }
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom right, #8e2d8e, black);
+  /* background-color: #8e2d8e; */
+}
+
+.authForm {
+  position: relative;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  margin: 3% auto;
+  padding: 4%;
+  border-radius: 5%;
   
-  .authForm > h1{
+  > h1 {
     text-align: center;
     font-weight: 500;
     color: #8e2d8e;
   }
-  label{
+  
+  label {
     font-size: medium;
     font-weight: 100;
     color: grey !important;
   }
-  input{
+  
+  input {
     display: block;
     width: 100%;
     padding: 5px;
     border: 3px solid white;
-    outline: none; 
+    outline: none;
     font-size: large;
     color: grey;
     font-family: 'Nunito', sans-serif;
   }
-  .comp{
+  
+  .comp {
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  .inputs{
+  
+  .inputs {
     display: flex;
     border-bottom: 3px solid grey;
   }
-  .forgetp{
+  
+  .forgetp {
     color: gray;
     text-align: right;
     font-size: small;
   }
-  .logo{
+  
+  .logo {
     width: 10%;
     height: 10%;
     color: grey;
@@ -59,11 +65,13 @@
     cursor: pointer;
     /* border: 2px solid red; */
   }
-  form ,.mainForm{
+  
+  form, .mainForm {
     display: flex;
     flex-direction: column;
   }
-  .btn{
+  
+  .btn {
     /* background: linear-gradient(to bottom right, #8e2d8e, white); */
     background-color: #8e2d8e;
     height: 45px;
@@ -78,28 +86,35 @@
     font-family: 'Nunito', sans-serif;
     font-weight: 100;
     transition: all 0.3s ease-in-out;
+    
+    &:hover {
+      background-color: white;
+      border: 2px solid #8e2d8e;
+      color: #8e2d8e;
+    }
   }
-  .btn:hover{
-    background-color: white;
-    border: 2px solid #8e2d8e;
-    color: #8e2d8e;
-  }
-  .container p{
-    text-align: center;
-    color: grey;
-    font-size: 15px;;
-  }
-  .validation{
-    margin-top: 10px;
-    max-width: 350px;
-    border: 2px solid #8e2d8e;
-    padding: 10px 10px 10px 40px;
+}
 
-  }
-  ul li{
+.container p {
+  text-align: center;
+  color: grey;
+  font-size: 15px;
+}
+
+.validation {
+  margin-top: 10px;
+  max-width: 350px;
+  border: 2px solid #8e2d8e;
+  padding: 10px 10px 10px 40px;
+  
+  ul li {
     color: gray;
   }
-  .footer > span{
+}
+
+.footer {
+  span {
     color: #8e2d8e;
     cursor: pointer;
   }
+}

@@ -61,6 +61,10 @@
             @include md{
                 height: calc(100vh - 160px);
             }
+            h1{
+                text-align: center;
+                color: rgba(0,0,0,0.5);
+            }
             .search-result-item{
                 display: flex;
                 align-items: center;

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 function Cart({ setShowCart }) {
   const navigate = useNavigate();
-  const { getCartItems, cartItems, subtotal, user, userId } = useContext(Context);
+  const { getCartItems, cartItems, subtotal, user, userId, setCartItems } = useContext(Context);
 
   const handleShowCart = () => {
     setShowCart(false);
@@ -21,6 +21,7 @@ function Cart({ setShowCart }) {
   }, []);
 
   const handleCheckout = async () => {
+    try{
     setShowCart(false)
     const resp = await fetch("http://localhost:5000/getKey");
     const key = await resp.json();
@@ -38,6 +39,15 @@ function Cart({ setShowCart }) {
       body: JSON.stringify(productsData),
     });
     const data = await response.json();
+    setCartItems([]);
+    let userData = localStorage.getItem('user');
+    console.log(userData);
+    if(userData){
+      userData = JSON.parse(userData);
+      userData.cart = [];
+      localStorage.setItem('user', JSON.stringify(userData))
+    }
+
     console.log(data);
     var options = {
       key,
@@ -47,7 +57,7 @@ function Cart({ setShowCart }) {
       description: "This product is best",
       image: "../../assets/Category/eyeglass.jpg",
       order_id: data.order.id,
-      callback_url: "http://localhost:5000/paymentverification",
+      callback_url: `http://localhost:5000/${userId}/paymentverification`,
       prefill: {
         name: user,
         email: "test@test.com",
@@ -62,6 +72,9 @@ function Cart({ setShowCart }) {
     };
     const razor = new window.Razorpay(options);
     razor.open();
+  }catch(err){
+    console.log('err', err);
+  }
   };
 
   return (

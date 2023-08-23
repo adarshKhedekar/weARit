@@ -29,6 +29,8 @@ const userSchema = new mongoose.Schema({
       productImage: Buffer,
       price: Number,
       quantity: Number,
+      paymentDate: Date,
+      orderId: String,
   }]
 });
 
