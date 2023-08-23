@@ -1,21 +1,14 @@
 import * as faceapi from "face-api.js";
-import React, { useContext, useState } from "react";
+import React from "react";
 import { BsCartPlus } from "react-icons/bs";
 import Model from "./Model";
 import './View.scss'
-import { useParams, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import { Context } from "../../utils/context";
-import { Buffer } from "buffer";
+import PropTypes from 'prop-types'
 
-function View() {
-  const { productName } = useParams();
-  const navigate = useNavigate();
+function EyeView({handleAddToCart, currProduct, isPresent}) {
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
   const [captureVideo, setCaptureVideo] = React.useState(false);
-  const [isPresent, setIsPresent] = useState(false);
-  const {popularProducts, addToCart, userId, cartItems, setShowCart} = useContext(Context);
-  const [currProduct, setCurrProduct] = useState(null);
+
 
   const videoRef = React.useRef();
   const videoHeight = 480;
@@ -33,29 +26,10 @@ function View() {
         faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
       ]).then(setModelsLoaded(true));
     };
-    const foundProduct = cartItems?.findIndex(item => item.productName === productName);
-
-    if(foundProduct === -1){
-      console.log('not')
-      setIsPresent(false);
-    }else{
-      console.log('yes')
-      setIsPresent(true)
-    }
-    const singleProduct = popularProducts?.find(
-      (item) => {
-        return item.productName === productName
-      }
-    );
-
-    if(singleProduct){
-      const { productDescription, category, price, image } = singleProduct;
-      const imageBuffer = Buffer.from(image);
-      setCurrProduct({productName: productName, productDescription: productDescription, category: category, price: price, img: imageBuffer})
-    }
+    
 
     loadModels();
-  }, [productName, cartItems, isPresent, popularProducts]);
+  }, []);
 
   const startVideo = () => {
     setCaptureVideo(true);
@@ -71,22 +45,7 @@ function View() {
       });
   };
 
-  const handleAddToCart = async (e) => {
-    if (!userId) {
-      navigate("/login");
-      return;
-    }
-    if(e.target.innerText === 'GO TO CART'){
-      setShowCart(true);
-      return;
-    }
-    try {
-      addToCart(currProduct, 1);
-      toast.success("Item added to Cart successfully");
-    } catch (err) {
-      console.log("err", err);
-    }
-  };
+  
 
   const handleVideoOnPlay = () => {
     setInterval(async () => {
@@ -180,8 +139,7 @@ function View() {
 
   return (
     <div className="main-container">
-      <ToastContainer/>
-      {captureVideo && modelsLoaded && <Model category={currProduct.category} productName={productName}/>}
+      {captureVideo && modelsLoaded && <Model category={currProduct.category} productName={currProduct.productName}/>}
       {captureVideo ? (
         modelsLoaded ? (
           <div>
@@ -248,7 +206,7 @@ function View() {
               fontSize: "20px",
               border: "none",
             }}
-            onClick={handleAddToCart}
+            onClick={(e) => handleAddToCart(e)}
           >
             <BsCartPlus size={20} />
             {isPresent ? "GO TO CART" : "ADD TO CART"}
@@ -258,4 +216,10 @@ function View() {
   );
 }
 
-export default View;
+EyeView.prototype = {
+  handleAddToCart: PropTypes.func.isRequired,
+  currProduct: PropTypes.object.isRequired,
+  isPresent: PropTypes.bool.isRequired
+}
+
+export default EyeView;
