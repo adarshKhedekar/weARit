@@ -25,9 +25,14 @@ function FaceView({ handleAddToCart, currProduct, isPresent }) {
         faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
       ]).then(setModelsLoaded(true));
     };
-
     loadModels();
-  }, []);
+    return () => {
+      console.log('inside useeffect clear')
+      if (captureVideo) {
+        closeWebcam();
+      }
+    };
+  }, [captureVideo]);
 
   const startVideo = () => {
     setCaptureVideo(true);
@@ -76,7 +81,6 @@ function FaceView({ handleAddToCart, currProduct, isPresent }) {
             .clearRect(0, 0, videoWidth, videoHeight);
         // const goggles = document.querySelector("model-viewer");
         const goggles = document.querySelector('img')
-        console.log(goggles);
         const video = document.querySelector("video");
         if (resizedDetections.length > 0) {
           const faceLandmarks = resizedDetections[0].landmarks;
@@ -94,7 +98,10 @@ function FaceView({ handleAddToCart, currProduct, isPresent }) {
             videoTop = video.getBoundingClientRect().top;
           }
           const header = document.querySelector('.main-header')
-        const headerHeight = header.getBoundingClientRect().height;
+          let headerHeight = 0;
+          if(header){
+            headerHeight = header.getBoundingClientRect().height;
+          }
           console.log("Left eye landmarks:", leftEye);
           console.log("Right eye landmarks:", rightEye);
           const x1 = leftEye[0]._x; // Starting x-coordinate of left eye
@@ -135,9 +142,12 @@ function FaceView({ handleAddToCart, currProduct, isPresent }) {
   };
 
   const closeWebcam = () => {
-    videoRef.current.pause();
-    videoRef.current.srcObject.getTracks()[0].stop();
-    setCaptureVideo(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach((track) => track.stop());
+      setCaptureVideo(false);
+    }
   };
 
   const handleVideoLoadedMetadata = () => {

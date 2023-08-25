@@ -75,10 +75,12 @@ function FaceView({ handleAddToCart, currProduct, isPresent }) {
             .getContext("2d")
             .clearRect(0, 0, videoWidth, videoHeight);
         const mask = document.querySelector("img");
-        console.log(mask);
         const video = document.querySelector("video");
         const header = document.querySelector('.main-header')
-        const headerHeight = header.getBoundingClientRect().height;
+        let headerHeight = 0;
+          if(header){
+            headerHeight = header.getBoundingClientRect().height;
+          }
         if (resizedDetections.length > 0) {
           const faceLandmarks = resizedDetections[0].landmarks;
           // console.log(goggles)
@@ -117,9 +119,12 @@ function FaceView({ handleAddToCart, currProduct, isPresent }) {
   };
 
   const closeWebcam = () => {
-    videoRef.current.pause();
-    videoRef.current.srcObject.getTracks()[0].stop();
-    setCaptureVideo(false);
+    if (videoRef.current) {
+        videoRef.current.pause();
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach((track) => track.stop());
+        setCaptureVideo(false);
+    }
   };
 
   const handleVideoLoadedMetadata = () => {

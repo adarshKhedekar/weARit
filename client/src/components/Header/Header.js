@@ -79,7 +79,7 @@ function Header() {
             <li>
               <RouterLink to="/">Home</RouterLink>
             </li>
-            <li>About</li>
+            <li><RouterLink to="/about">About</RouterLink></li>
            { isMainPage &&  <li><ScrollLink to="category" smooth={true} duration={500}>Categories</ScrollLink></li>}
           </ul>
           <div className="center">

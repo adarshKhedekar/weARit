@@ -8,6 +8,7 @@ import View from "./components/3dView/View";
 import NoMatch from "./components/NoMatch";
 import Login from "./components/Login/Login";
 import Orders from "./components/Orders/Orders";
+import About from "./components/About/About";
 import { Context } from "./utils/context";
 import { useContext, useEffect } from "react";
 import ScrollToTop from "./ScrollToTop";
@@ -49,6 +50,16 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
+          <Route
+            path="/about"
+            element={
+              <>
+                <Header />
+                <About />
+                <Footer />
+              </>
+            }
+          />
           <Route
             path="/category/:id"
             element={

@@ -9,10 +9,10 @@
     .content{
         position: relative;
         .content-image{
-            height: 50vh;
-            width: 100%;
+            height: 50vh !important;
+            width: 100% !important;
             @include md{
-                height: calc(100vh - 80px);
+                height: calc(100vh - 80px) !important;
             }
         }
         .left{
