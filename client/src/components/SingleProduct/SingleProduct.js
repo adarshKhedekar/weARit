@@ -105,7 +105,7 @@ function SingleProduct() {
                 {isPresent ? "GO TO CART" : "ADD TO CART"}
               </button>
               <button className="add-to-cart-button" onClick={handleView}>
-                AR VIEW
+                3D VIEW
               </button>
             </div>
 

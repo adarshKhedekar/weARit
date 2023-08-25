@@ -2,19 +2,10 @@
 
 .main-container{
     .model-container-eye{
-        // model-viewer{
-        // height: 0;
-        // width: 0;
-        // padding: 0;
-        // margin: 0;
-        // position: absolute;
-        // z-index: 1;
-        // // background-color: yellow;
-        // }
         img{
             height: 0;
             width: 0;
-            // mix-blend-mode: multiply;
+            mix-blend-mode: multiply;
             position: absolute;
         }
     }

@@ -32,7 +32,7 @@ app.use('/', paymentRouter)
 
 //database connection
 mongoose
-  .connect("mongodb://127.0.0.1:27017/wearit")
+  .connect(`mongodb+srv://Adarsh152:${process.env.DB_PASSWORD}@cluster0.srun7ni.mongodb.net/?retryWrites=true&w=majority`)
   .then(() => {
     console.log("connected to Mongoose");
   })
@@ -92,3 +92,5 @@ app.listen(process.env.PORT, () => {
   console.log(`http://localhost:${process.env.PORT}`);
 });
 
+
+//mongo password and username is same : Adarsh152

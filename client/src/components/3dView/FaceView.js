@@ -130,7 +130,7 @@ function FaceView({ handleAddToCart, currProduct, isPresent }) {
     <div className="main-container" >
       {captureVideo && modelsLoaded &&
         <div className="model-container-face">
-            <img src={`data:image/png;base64,${currProduct?.img.toString("base64")}`} alt="" />
+            <img  src={`data:image/png;base64,${currProduct?.img.toString("base64")}`} alt="" />
         </div>
       }
       {captureVideo ? (

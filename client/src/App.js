@@ -75,7 +75,6 @@ function App() {
               <>
                 <Header />
                 <View />
-                <Footer />
               </>
             }
           />

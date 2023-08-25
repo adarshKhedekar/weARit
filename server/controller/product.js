@@ -16,7 +16,7 @@ exports.getAllProducts = async (req, res) => {
 exports.createProduct = async (req, res) => {
     try {
       //add image afterwards
-      const image = fs.readFileSync("./Products/image1.png");
+      const image = fs.readFileSync("./Products/m6.png");
       const { productName, productDescription, popular, category, price } =
         req.body;
   
