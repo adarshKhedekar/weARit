@@ -223,10 +223,10 @@ function Login() {
               </button>
             </div>
           </form>
-          {isLogin && (
+          {(
             <p className="footer">
-              Don&#39;t have an account?{" "}
-              <span onClick={handleLoginClick}>SignUp</span>
+              {isLogin && <>Don&#39;t have an account?<span onClick={handleLoginClick}>SignUp</span></>}
+              {!isLogin && <>Already have an account?<span onClick={handleLoginClick}>SignIn</span></>}
             </p>
           )}
           {showValidation && <div className="validation">

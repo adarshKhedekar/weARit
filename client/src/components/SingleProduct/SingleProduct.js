@@ -130,7 +130,9 @@ function SingleProduct() {
         </div>
         <RelatedProduct category={currProduct.category} productName={productName} />
       </div>
-    </div>) : <h1>Loading...</h1>
+    </div>) : <div className="loader-container">
+      <div className="loader"></div>
+    </div>
   );
 }
 

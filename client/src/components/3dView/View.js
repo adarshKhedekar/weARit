@@ -20,10 +20,8 @@ function View() {
     );
 
     if (foundProduct === -1) {
-      console.log("not");
       setIsPresent(false);
     } else {
-      console.log("yes");
       setIsPresent(true);
     }
     const singleProduct = popularProducts?.find((item) => {

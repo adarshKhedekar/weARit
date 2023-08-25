@@ -1,5 +1,7 @@
 const Product = require('../models/Product');
 const Category = require('../models/Category');
+const fs = require('fs');
+const mongoose = require('mongoose')
 
 exports.getAllProducts = async (req, res) => {
     try {
@@ -14,7 +16,7 @@ exports.getAllProducts = async (req, res) => {
 exports.createProduct = async (req, res) => {
     try {
       //add image afterwards
-      const image = fs.readFileSync("./Products/face4.png");
+      const image = fs.readFileSync("./Products/image1.png");
       const { productName, productDescription, popular, category, price } =
         req.body;
   

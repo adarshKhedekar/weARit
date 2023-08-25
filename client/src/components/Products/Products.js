@@ -5,7 +5,8 @@ import {useContext} from 'react'
 import { Context } from '../../utils/context';
 function Products({title, products}) {
   const {popularProducts} = useContext(Context);
-  const productsToRender = !products ? popularProducts : products;
+  const mainProducts = popularProducts?.filter((product) => product.popular === true);
+  const productsToRender = !products ? mainProducts : products;
 
   return (
     <div className='products-container'>

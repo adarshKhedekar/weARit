@@ -1,14 +1,13 @@
 import * as faceapi from "face-api.js";
 import React from "react";
-import { BsCartPlus } from "react-icons/bs";
-import Model from "./Model";
-import './View.scss'
-import PropTypes from 'prop-types'
+import { BsCartPlus } from "react-icons/bs"
+import "./View.scss";
+import PropTypes from "prop-types";
 
-function FaceView({handleAddToCart, currProduct, isPresent}) {
+function FaceView({ handleAddToCart, currProduct, isPresent }) {
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
   const [captureVideo, setCaptureVideo] = React.useState(false);
-
+  console.log("inside faces");
 
   const videoRef = React.useRef();
   const videoHeight = 480;
@@ -17,7 +16,7 @@ function FaceView({handleAddToCart, currProduct, isPresent}) {
 
   React.useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = `${process.env.PUBLIC_URL}/weights`;//../weights
+      const MODEL_URL = `${process.env.PUBLIC_URL}/weights`; //../weights
 
       await Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
@@ -26,7 +25,6 @@ function FaceView({handleAddToCart, currProduct, isPresent}) {
         faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
       ]).then(setModelsLoaded(true));
     };
-    
 
     loadModels();
   }, []);
@@ -45,14 +43,12 @@ function FaceView({handleAddToCart, currProduct, isPresent}) {
       });
   };
 
-  
-
   const handleVideoOnPlay = () => {
     setInterval(async () => {
       if (canvasRef && canvasRef.current) {
-        canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
-          videoRef.current
-        );
+        if (videoRef.current.readyState >= 3) {
+            canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current);
+        }
         const displaySize = {
           width: videoWidth,
           height: videoHeight,
@@ -78,51 +74,40 @@ function FaceView({handleAddToCart, currProduct, isPresent}) {
           canvasRef.current
             .getContext("2d")
             .clearRect(0, 0, videoWidth, videoHeight);
-            const goggles = document.querySelector("model-viewer");
-            console.log(goggles)
-            const video = document.querySelector("video");
+        const mask = document.querySelector("img");
+        console.log(mask);
+        const video = document.querySelector("video");
+        const header = document.querySelector('.main-header')
+        const headerHeight = header.getBoundingClientRect().height;
         if (resizedDetections.length > 0) {
           const faceLandmarks = resizedDetections[0].landmarks;
-          // goggles.style.zIndex = 1;
           // console.log(goggles)
 
-          // Get the points around the eyes
-          const leftEye = faceLandmarks.getLeftEye();
-          const rightEye = faceLandmarks.getRightEye();
-
-          // Log the positions of the eye landmarks
-          let videoLeft, videoTop
-          if(video){
+          let videoLeft, videoTop;
+          if (video) {
             videoLeft = video.getBoundingClientRect().left;
             videoTop = video.getBoundingClientRect().top;
           }
-          
-          console.log("Left eye landmarks:", leftEye);
-          console.log("Right eye landmarks:", rightEye);
-          const x1 = leftEye[0]._x; // Starting x-coordinate of left eye
-          const x2 = rightEye[rightEye.length - 1]._x; // Ending x-coordinate of right eye
-          // const y2 = rightEye[0]._y;
-          const y1 = Math.min(leftEye[0]._y, rightEye[0]._y); // Top-most y-coordinate of eyes
+          const jaw = faceLandmarks.getJawOutline();
 
-          const width = x2 - x1; // Calculate the width of the goggles overlay
-          // console.log('height:', height)
-          // console.log('x1:', x1)
-          // console.log('x2:', x2)
-          console.log("y1:", y1);
-          // console.log('vt:', videoTop)
-          // console.log('vl:', videoLeft)
-          console.log(width);
-          let toCut = width / 3;
-          let oneFourth = width / 4;
-          let half = width/2;
-          let size = (width + width + toCut);
-          goggles.style.height = `${size}px`; 
-          goggles.style.width = `${size}px`;//+150
-          goggles.style.top = `${(y1) - half}px`; //y1-height
-          goggles.style.left = `${x1 + videoLeft - (toCut + 15)}px`;
-          // goggles.style.transform = `rotate(${y2-y1}px)`
+          // Calculate the width, height, top, and left positions of the mask
+          const jawLeftX = Math.min(...jaw.map((point) => point._x));
+          const jawRightX = Math.max(...jaw.map((point) => point._x));
+          const jawTopY = Math.min(...jaw.map((point) => point._y));
+          const jawBottomY = Math.max(...jaw.map((point) => point._y));
+
+          const maskWidth = jawRightX - jawLeftX;
+          const maskHeight = jawBottomY - jawTopY;
+          if(mask){
+            mask.style.width = `${maskWidth}px`;
+            mask.style.height = `${maskHeight}px`;
+            mask.style.left = `${(jawLeftX + videoLeft)}px`;
+            mask.style.top = `${(jawTopY + headerHeight + 25)}px`;
+          }
         } else {
-          goggles.style.top = '-360px'
+            if(mask){
+                mask.style.top = "-360px";
+            }
         }
         // canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
         // canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
@@ -137,9 +122,17 @@ function FaceView({handleAddToCart, currProduct, isPresent}) {
     setCaptureVideo(false);
   };
 
+  const handleVideoLoadedMetadata = () => {
+    handleVideoOnPlay();
+  };
+
   return (
-    <div className="main-container">
-      {captureVideo && modelsLoaded && <Model category={currProduct.category} productName={currProduct.productName}/>}
+    <div className="main-container" >
+      {captureVideo && modelsLoaded &&
+        <div className="model-container-face">
+            <img src={`data:image/png;base64,${currProduct?.img.toString("base64")}`} alt="" />
+        </div>
+      }
       {captureVideo ? (
         modelsLoaded ? (
           <div>
@@ -154,10 +147,11 @@ function FaceView({handleAddToCart, currProduct, isPresent}) {
                 ref={videoRef}
                 height={videoHeight}
                 width={videoWidth}
-                onPlay={handleVideoOnPlay}
+                // onPlay={handleVideoOnPlay}
+                onLoadedMetadata={handleVideoLoadedMetadata}
                 style={{ borderRadius: "10px" }}
               />
-              <canvas ref={canvasRef} style={{ position: "absolute" }} />
+              <canvas ref={canvasRef} style={{ position: "absolute"}} />
             </div>
           </div>
         ) : (
@@ -166,7 +160,14 @@ function FaceView({handleAddToCart, currProduct, isPresent}) {
       ) : (
         <></>
       )}
-      <div style={{display: 'flex', gap:'15px', justifyContent: 'center', margin: '20px'}}>
+      <div
+        style={{
+          display: "flex",
+          gap: "15px",
+          justifyContent: "center",
+          margin: "20px",
+        }}
+      >
         {captureVideo && modelsLoaded ? (
           <button
             onClick={closeWebcam}
@@ -175,7 +176,7 @@ function FaceView({handleAddToCart, currProduct, isPresent}) {
               backgroundColor: "#8e2de2",
               color: "white",
               padding: "15px",
-              fontSize: "20px",
+              fontSize: "17px",
               border: "none",
             }}
           >
@@ -189,7 +190,7 @@ function FaceView({handleAddToCart, currProduct, isPresent}) {
               backgroundColor: "#8e2de2",
               color: "white",
               padding: "15px",
-              fontSize: "20px",
+              fontSize: "17px",
               border: "none",
             }}
           >
@@ -197,20 +198,20 @@ function FaceView({handleAddToCart, currProduct, isPresent}) {
           </button>
         )}
         <button
-            style={{
-              cursor: "pointer",
-              backgroundColor: "#8e2de2",
-              color: "white",
-              padding: "15px",
-              gap:'5px',
-              fontSize: "20px",
-              border: "none",
-            }}
-            onClick={(e) => handleAddToCart(e)}
-          >
-            <BsCartPlus size={20} />
-            {isPresent ? "GO TO CART" : "ADD TO CART"}
-          </button>
+          style={{
+            cursor: "pointer",
+            backgroundColor: "#8e2de2",
+            color: "white",
+            padding: "15px",
+            gap: "5px",
+            fontSize: "17px",
+            border: "none",
+          }}
+          onClick={(e) => handleAddToCart(e)}
+        >
+          <BsCartPlus size={17} />
+          {isPresent ? "GO TO CART" : "ADD TO CART"}
+        </button>
       </div>
     </div>
   );
@@ -219,7 +220,7 @@ function FaceView({handleAddToCart, currProduct, isPresent}) {
 FaceView.prototype = {
   handleAddToCart: PropTypes.func.isRequired,
   currProduct: PropTypes.object.isRequired,
-  isPresent: PropTypes.bool.isRequired
-}
+  isPresent: PropTypes.bool.isRequired,
+};
 
 export default FaceView;
