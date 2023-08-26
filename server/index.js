@@ -26,7 +26,7 @@ const upload = multer();
 
 app.use(cors(
   {
-    origin: [""],
+    origin: ["https://wearit-omega.vercel.app"],
     methods: ["POST", "GET"],
     credentials: true
   }
