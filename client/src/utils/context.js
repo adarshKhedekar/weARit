@@ -22,7 +22,7 @@ const AppContext = ({ children }) => {
 
     formData.append("image", imageBlob); // Append the image file
 
-    const response = await fetch(`http://localhost:5000/${userId}/addToCart`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URI}/${userId}/addToCart`, {
       method: "POST",
       body: formData,
     });
@@ -44,7 +44,7 @@ const AppContext = ({ children }) => {
   };
 
   const getCartItems = async () => {
-    const response = await fetch(`http://localhost:5000/${userId}/getcart`);
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URI}/${userId}/getcart`);
     const data = await response.json();
     console.log('user-cart', data);
     setCartItems(data);

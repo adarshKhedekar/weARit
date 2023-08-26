@@ -23,7 +23,7 @@ function Cart({ setShowCart }) {
   const handleCheckout = async () => {
     try{
     setShowCart(false)
-    const resp = await fetch("http://localhost:5000/getKey");
+    const resp = await fetch(`${process.env.REACT_APP_BACKEND_URI}/getKey`);
     const key = await resp.json();
 
     const productsData = {
@@ -31,7 +31,7 @@ function Cart({ setShowCart }) {
       userId: userId,
       cart: cartItems
     };
-    const response = await fetch("http://localhost:5000/checkout", {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URI}/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ function Cart({ setShowCart }) {
       description: "This product is best",
       image: "../../assets/Category/eyeglass.jpg",
       order_id: data.order.id,
-      callback_url: `http://localhost:5000/${userId}/paymentverification`,
+      callback_url: `${process.env.REACT_APP_BACKEND_URI}/${userId}/paymentverification`,
       prefill: {
         name: user,
         email: "test@test.com",

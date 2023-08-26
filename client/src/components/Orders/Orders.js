@@ -13,7 +13,7 @@ function Orders() {
 
   useEffect(() => {
     const getOrders = async () => {
-      const response = await fetch(`http://localhost:5000/${userId}/getorders`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URI}/${userId}/getorders`);
       const data = await response.json();
       console.log(data);
       setOrders([...data.orders]);

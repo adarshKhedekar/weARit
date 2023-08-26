@@ -14,7 +14,7 @@ function CartItem({ product }) {
   const handleRemoveItem = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/${userId}/removeFromCart`,
+        `${process.env.REACT_APP_BACKEND_URI}/${userId}/removeFromCart`,
         {
           method: "POST",
           headers: {
