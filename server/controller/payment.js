@@ -44,7 +44,7 @@ exports.paymentVerification = async (req, res) => {
     user.cart = [];
     await user.save();
 
-    return res.redirect(`http://localhost:3000/orders`);
+    return res.redirect(`https://wearit-omega.vercel.app/orders`);
   }
   res.status(404).json({ success: false, message: "Transaction Failed!!" });
 };
