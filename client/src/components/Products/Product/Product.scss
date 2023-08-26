@@ -14,6 +14,7 @@
         padding: 25px;
         display: flex;
         align-items: center;
+        cursor: pointer;
         @include md{
             height: 350px;
         }
@@ -44,6 +45,26 @@
             font-size: 10px;
             @include md{
                 font-size: 24px;
+            }
+        }
+        .add-to-cart-button{
+            outline: 0;
+            border: 0;
+            height: 50px;
+            width: 100%;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 13px;
+            color: white;
+            background-color: #8e3de2;
+            border-bottom: 3px solid #6516aa;
+            flex-grow: 1;
+            @include md{
+                font-size: 16px;
+                flex-grow: unset;
             }
         }
     }

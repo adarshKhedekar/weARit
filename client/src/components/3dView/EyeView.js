@@ -102,8 +102,8 @@ function FaceView({ handleAddToCart, currProduct, isPresent }) {
           if(header){
             headerHeight = header.getBoundingClientRect().height;
           }
-          console.log("Left eye landmarks:", leftEye);
-          console.log("Right eye landmarks:", rightEye);
+          // console.log("Left eye landmarks:", leftEye);
+          // console.log("Right eye landmarks:", rightEye);
           const x1 = leftEye[0]._x; // Starting x-coordinate of left eye
           const x2 = rightEye[rightEye.length - 1]._x; // Ending x-coordinate of right eye
           // const y2 = rightEye[0]._y;
@@ -113,14 +113,13 @@ function FaceView({ handleAddToCart, currProduct, isPresent }) {
           // console.log('height:', height)
           // console.log('x1:', x1)
           // console.log('x2:', x2)
-          console.log("y1:", y1);
+          // console.log("y1:", y1);
           // console.log('vt:', videoTop)
           // console.log('vl:', videoLeft)
-          console.log(width);
+          // console.log(width);
           let toCut = width / 3;
           let oneFourth = width / 4;
           let half = width/2;
-          console.log(oneFourth)
           let size = (width + width);
           if(goggles){
             goggles.style.height = `${(size/4)}px`; 
