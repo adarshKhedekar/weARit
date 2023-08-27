@@ -1,3 +1,4 @@
+@import '../../css-config/mixins.scss';
 .container {
   position: relative;
   display: flex;
@@ -7,6 +8,17 @@
   height: 100vh;
   background: linear-gradient(to bottom right, #8e2d8e, black);
   /* background-color: #8e2d8e; */
+  .heading{
+    color: white;
+    position: absolute;
+    top: 1%;
+    left: 37%;
+    cursor: pointer;
+    @include md{
+      top: 1%;
+      left: 1%;
+    }
+  }
 }
 
 .authForm {

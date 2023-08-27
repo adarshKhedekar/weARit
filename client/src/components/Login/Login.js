@@ -157,6 +157,7 @@ function Login() {
     <>
       <div className="container">
         <ToastContainer />
+        <h1 className="heading" onClick={() => navigate('/')}>WeARit</h1>
         <div className="authForm">
           <h1>{isLogin ? "Login" : "SignUp"}</h1>
           <form action="" onSubmit={handleSubmit}>
